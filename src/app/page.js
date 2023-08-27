@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     q: 'I\'m sick of hearing about AI',
-    a: 'Me too but this seemed like a cool idea',
+    a: 'Me too but this seemed like a fun idea',
   },
   {
     q: 'Where\'s all the marketing hype I usually see on a landing page',
@@ -85,7 +85,7 @@ export default function Home() {
           <button
             type="submit"
             href={password === '' ? '' : '/editor'}
-            className={`px-3 py-1 text-sm text-white transition-opacity ${password === '' ? 'opacity-20' : 'opacity-100'}`}
+            className={`px-3 py-1 text-sm text-white transition-opacity ${password === '' ? 'opacity-40' : 'opacity-100'}`}
           >
             Try it out
           </button>

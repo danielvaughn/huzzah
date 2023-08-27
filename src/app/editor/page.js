@@ -9,6 +9,9 @@ export default function CodeEditor() {
   const [theme, setTheme] = useState('vs')
   const [languages, setLanguages] = useState([])
   const [selectedLang, setSelectedLang] = useState('javascript')
+  const [isConverting, setIsConverting] = useState(false)
+  const [isDisabled, setIsDisabled] = useState(true)
+  const [outputCode, setOutputCode] = useState('Your output will be shown here')
   const monaco = useMonaco()
 
   const loadDefaultCode = async () => {
@@ -24,6 +27,30 @@ export default function CodeEditor() {
   const loadLanguages = (monaco) => {
     const loadedLanguages = monaco.languages.getLanguages()
     setLanguages(loadedLanguages.map(({ id }) => id))
+  }
+
+  const convertText = async () => {
+    setIsConverting(true)
+
+    const code = await localforage.getItem('code')
+
+    const response = await fetch('/convert', {
+      method: 'POST',
+      body: JSON.stringify({
+        language: selectedLang,
+        input: code,
+      }),
+    })
+
+    if (!response.ok) {
+      window.alert('Something went wrong, check the network panel idk')
+    }
+
+    const data = await response.json()
+    setOutputCode(data.output)
+
+    setIsConverting(false)
+    setIsDisabled(true)
   }
 
   useEffect(() => {
@@ -50,6 +77,7 @@ export default function CodeEditor() {
             theme={theme}
             defaultValue={defaultCode}
             onChange={(code) => {
+              setIsDisabled(false)
               localforage.setItem('code', code)
             }}
             options={{
@@ -61,7 +89,7 @@ export default function CodeEditor() {
               },
             }}
           />
-          <div className="absolute top-0 left-0 right-0 z-50 h-8 p-1 bg-black">
+          <div className="absolute top-0 left-0 right-0 z-50 flex items-center h-8 p-1 bg-black">
             <select
               onChange={(e) => {
                 setTheme(e.target.value)
@@ -81,7 +109,7 @@ export default function CodeEditor() {
             height="100vh"
             defaultLanguage={selectedLang}
             theme={theme}
-            defaultValue="your output will show here"
+            value={outputCode}
             options={{
               padding: {
                 top: 40,
@@ -92,13 +120,14 @@ export default function CodeEditor() {
               readOnly: true,
             }}
           />
-          <div className="absolute top-0 left-0 right-0 z-50 h-8 p-1 pl-0 bg-black">
+          <div className="absolute top-0 left-0 right-0 z-50 flex items-center h-8 p-1 pl-0 bg-black">
             <select
               onChange={(e) => {
                 setSelectedLang(e.target.value)
+                setIsDisabled(false)
               }}
               value={selectedLang}
-              className="w-40 text-sm"
+              className="block w-40 h-5 text-sm border-none outline-none"
             >
               {languages.map((lang) => {
                 return (
@@ -106,6 +135,34 @@ export default function CodeEditor() {
                 )
               })}
             </select>
+            {!isConverting && (
+              <button
+                type="button"
+                className="flex items-center justify-center w-6 h-5 text-xl leading-none text-white bg-orange-500 border-none cursor-pointer hover:bg-orange-600 disabled:opacity-50"
+                disabled={isDisabled}
+                onClick={() => {
+                  convertText()
+                }}
+              >
+                <span>⏵</span>
+              </button>
+            )}
+
+            {isConverting && (
+              <button
+                type="button"
+                className="flex items-center justify-center w-6 h-5 text-xl leading-none text-orange-500 border-none"
+                disabled
+              >
+                <div
+                  className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                  role="status">
+                  <span
+                    className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+                  />
+                </div>
+              </button>
+            )}
           </div>
         </div>
       </div>
