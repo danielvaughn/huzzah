@@ -11,7 +11,7 @@ export function middleware(req) {
     return NextResponse.redirect(new URL('/', req.url))
   }
 
-  if (cookie.value !== 'daniel') {
+  if (cookie.value !== process.env.PASSWORD) {
     return NextResponse.redirect(new URL('/', req.url))
   }
 
