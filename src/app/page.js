@@ -123,7 +123,7 @@ export default function Home() {
       </section>
 
       <section className="mb-5">
-        <p>Aaand here&apos;s what you will get in Rust:</p>
+        <p>Aaand here&apos;s what you&apos;ll get in Rust:</p>
 
         <div className="px-6 pt-0 pb-5 border rounded bg-slate-200 border-slate-300 w-fit text-slate-800">
           {renderedRsBlock !== '' && (
