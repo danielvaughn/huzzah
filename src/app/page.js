@@ -5,10 +5,6 @@ import React, { useEffect, useState } from "react"
 
 const faqs = [
   {
-    q: 'Why did you make this?',
-    a: 'I like writing code, I don\'t like having to write <i>good</i> code',
-  },
-  {
     q: 'I\'m sick of hearing about AI',
     a: 'Me too but this seemed like a fun idea',
   },
@@ -32,14 +28,14 @@ const faqs = [
 
 // THANK YOU NEXTJS WHAT THE FUCK
 const pseudoBlock = `
+// write pseudo code however you like
 fizzBuzz(count)
   for each i in count
     if divisible by 3, print 'fizz'
     if divisible by 5, print 'buzz'
     if both, print 'fizz buzz'
-`
 
-const tsBlock = `
+// and Huzzah will give you the following in Typescript
 function fizzBuzz(count: number): void {
   for (let i = 1; i <= count; i++) {
       if (i % 3 === 0 && i % 5 === 0) {
@@ -51,9 +47,8 @@ function fizzBuzz(count: number): void {
       }
   }
 }
-`
 
-const rsBlock = `
+// aaand here's the same thing but in Rust
 fn fizz_buzz(count: i32) {
   for i in 1..=count {
       match (i % 3, i % 5) {
@@ -70,13 +65,9 @@ export default function Home() {
   const [password, setPassword] = useState('')
   const router = useRouter()
   const [renderedPseudoBlock, setRenderedPseudoBlock] = useState('')
-  const [renderedTSBlock, setRenderedTSBlock] = useState('')
-  const [renderedRsBlock, setRenderedRsBlock] = useState('')
 
   useEffect(() => {
     setRenderedPseudoBlock(pseudoBlock)
-    setRenderedTSBlock(tsBlock)
-    setRenderedRsBlock(rsBlock)
   }, [])
 
   return (
@@ -88,24 +79,15 @@ export default function Home() {
 
       <section className="mb-5">
         <p>
-          Huzzah is the laziest editor imaginable - write pseudocode and let AI generate the equivalent in any language.
-          Made for only the most lackluster devs, the absolute bottom of the programming barrel.
+          Huzzah is the laziest editor imaginable - write pseudo code and let AI generate the equivalent in any language you like.
+          Made for only the most lackluster devs.
         </p>
       </section>
 
       <section className="mb-5">
-        <p>
-          I don&apos;t like how Copilot suggests one line at a time while you&apos;re coding.
-          It takes the joy away from actually having to think about the problem itself.
-          What I want is an editor that lets me write code in whatever manner makes the most sense to me, then turns it into an acceptable format in any target language.
-          I feel that is a much better AI interface, though you can&apos;t really get that UX in standard editors, so I&apos;m toying with this idea.
-        </p>
-      </section>
+        <p>Here&apos;s an example:</p>
 
-      <section className="mb-5">
-        <p>Here&apos;s an example. Just write some shitty pseudo code:</p>
-
-        <div className="px-6 pt-0 pb-5 border rounded bg-slate-200 border-slate-300 w-fit text-slate-800">
+        <div className="w-full px-6 pt-0 pb-5 overflow-y-hidden border rounded bg-slate-200 border-slate-300 text-slate-800">
           {renderedPseudoBlock !== '' && (
             <pre><code>{renderedPseudoBlock}</code></pre>
           )}
@@ -113,26 +95,17 @@ export default function Home() {
       </section>
 
       <section className="mb-5">
-        <p>And here&apos;s what Huzzah will give you in Typescript:</p>
-
-        <div className="px-6 pt-0 pb-5 border rounded bg-slate-200 border-slate-300 w-fit text-slate-800">
-          {renderedTSBlock !== '' && (
-            <pre><code>{renderedTSBlock}</code></pre>
-          )}
-        </div>
+        <p className="mb-1">The TLDR behind &quot;why Huzzah&quot; is that I&apos;m just not a huge fan of Copilot.</p>
+        <p>
+          I don&apos;t like how it suggests one line at a time while you&apos;re coding.
+          For me, it takes away the joy of thinking about the problem itself.
+          What I want is an editor that lets me write code in whatever manner makes the most sense to me, then turns it into an acceptable format in any target language *once I am ready*.
+          I feel that is a much better AI interface, though you can&apos;t really get that UX in standard editors, so I&apos;m toying with this idea.
+        </p>
       </section>
 
       <section className="mb-5">
-        <p>Aaand here&apos;s what you&apos;ll get in Rust:</p>
-
-        <div className="px-6 pt-0 pb-5 border rounded bg-slate-200 border-slate-300 w-fit text-slate-800">
-          {renderedRsBlock !== '' && (
-            <pre><code>{renderedRsBlock}</code></pre>
-          )}
-        </div>
-      </section>
-
-      <section className="mb-5">
+        <h2 className="mb-2 text-lg font-semibold">FAQ</h2>
         <dl>
           {faqs.map((faq) => {
             return (
